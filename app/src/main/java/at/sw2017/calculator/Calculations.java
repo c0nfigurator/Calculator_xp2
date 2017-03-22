@@ -6,7 +6,7 @@ package at.sw2017.calculator;
 
 public class Calculations
 {
-    private Calculations ()  
+    protected Calculations ()
     {
     }
 

@@ -17,7 +17,7 @@ public class Calculator extends Activity implements View.OnClickListener
     private ArrayList<Button> numberButtons = new ArrayList<Button>();
     private TextView numberView;
     private Integer firstNumber;
-    private State state;
+    private static State state = State.INIT;
 
 
 
@@ -84,7 +84,7 @@ public class Calculator extends Activity implements View.OnClickListener
                 state = State.DIV;
                 break;
             case R.id.buttonEqual:
-                clearNumberView();
+                calculateResult();
                 state = State.INIT;
                 break;
             case R.id.buttonClear:

@@ -47,4 +47,17 @@ public class CalculatorUnitTest
         int result = Calculations.doDivision(11, 4);
         assertEquals(2, result);
     }
+    @Test
+    public void testDoAddition1()
+    {
+        int result = Calculations.doAddition(-2, 3);
+        assertEquals(1, result);
+    }
+    @Test
+    public void testCalculationsConstructor()
+    {
+        Calculations tmpcalc = new Calculations();
+        assertNotNull(tmpcalc);
+    }
+
 }

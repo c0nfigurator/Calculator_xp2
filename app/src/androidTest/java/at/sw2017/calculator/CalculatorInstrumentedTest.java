@@ -69,5 +69,75 @@ public class CalculatorInstrumentedTest {
         onView(withId(R.id.textView)).check(matches(withText("0")));
     }
 
+    @Test
+    public void testMultiplication()
+    {
+        onView(withText("5")).perform(click());
+        onView(withText("*")).perform(click());
+        onView(withText("4")).perform(click());
+        onView(withText("=")).perform(click());
+
+        onView(withId(R.id.textView)).check(matches(withText("20")));
+    }
+
+    @Test
+    public void testDivision()
+    {
+        onView(withText("1")).perform(click());
+        onView(withText("6")).perform(click());
+        onView(withText("/")).perform(click());
+        onView(withText("4")).perform(click());
+        onView(withText("=")).perform(click());
+
+        onView(withId(R.id.textView)).check(matches(withText("4")));
+    }
+
+    @Test
+    public void testAddition()
+    {
+        onView(withText("5")).perform(click());
+        onView(withText("+")).perform(click());
+        onView(withText("5")).perform(click());
+        onView(withText("=")).perform(click());
+
+        onView(withId(R.id.textView)).check(matches(withText("10")));
+    }
+
+    @Test
+    public void testSubtraction()
+    {
+        onView(withText("0")).perform(click());
+        onView(withText("-")).perform(click());
+        onView(withText("4")).perform(click());
+        onView(withText("=")).perform(click());
+
+        onView(withId(R.id.textView)).check(matches(withText("-4")));
+    }
+
+    @Test
+    public void testSecondParam()
+    {
+        onView(withText("7")).perform(click());
+        onView(withText("=")).perform(click());
+
+        onView(withId(R.id.textView)).check(matches(withText("7")));
+    }
+
+    @Test
+    public void testSwitchState()
+    {
+        State state = State.ADD;
+        testAddition();
+        state = State.SUB;
+        testSubtraction();
+        state = State.MUL;
+        testMultiplication();
+        state = State.DIV;
+        testDivision();
+        state = State.INIT;
+        testSecondParam();
+
+    }
+
 
 }
