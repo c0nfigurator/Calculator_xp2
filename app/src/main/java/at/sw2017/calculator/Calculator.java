@@ -16,6 +16,8 @@ public class Calculator extends Activity implements View.OnClickListener
         buttonClear;
     private ArrayList<Button> numberButtons = new ArrayList<Button>();
     private TextView numberView;
+    private Integer firstNumber;
+    private State state;
 
 
 
@@ -24,14 +26,14 @@ public class Calculator extends Activity implements View.OnClickListener
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculator);
-        buttonEqual = (Button)findViewById(R.id.buttonEqual);
-        buttonAdd = (Button)findViewById(R.id.buttonAdd);
-        buttonSub = (Button)findViewById(R.id.buttonSub);
-        buttonMul = (Button)findViewById(R.id.buttonMul);
-        buttonDiv = (Button)findViewById(R.id.buttonDiv);
-        buttonClear = (Button)findViewById(R.id.buttonClear);
+        buttonEqual =(Button)findViewById(R.id.buttonEqual);
+        buttonAdd =(Button)findViewById(R.id.buttonAdd);
+        buttonSub =(Button)findViewById(R.id.buttonSub);
+        buttonMul =(Button)findViewById(R.id.buttonMul);
+        buttonDiv =(Button)findViewById(R.id.buttonDiv);
+        buttonClear =(Button)findViewById(R.id.buttonClear);
 
-        numberView = (TextView)findViewById(R.id.textView);
+        numberView =(TextView)findViewById(R.id.textView);
 
         buttonEqual.setOnClickListener(this);
         buttonAdd.setOnClickListener(this);
@@ -40,8 +42,6 @@ public class Calculator extends Activity implements View.OnClickListener
         buttonDiv.setOnClickListener(this);
         buttonClear.setOnClickListener(this);
 
-//        button3 = (Button)findViewById(R.id.button3);
-//        button3.setOnClickListener(this);
 
 
         setUpNumberButtonListener();
@@ -54,7 +54,7 @@ public class Calculator extends Activity implements View.OnClickListener
         {
             String buttonName = "button" + i;
             int id = getResources().getIdentifier(buttonName, "id", R.class.getPackage().getName());
-            Button button = (Button)findViewById(id);
+            Button button =(Button)findViewById(id);
             button.setOnClickListener(this);
             numberButtons.add(button);
         }
@@ -64,27 +64,38 @@ public class Calculator extends Activity implements View.OnClickListener
     @Override
     public void onClick(View v)
     {
-        Button clickedButton = (Button)v;
-        switch (clickedButton.getId())
+        Button clickedButton =(Button)v;
+        switch(clickedButton.getId())
         {
             case R.id.buttonAdd:
+                clearNumberView();
+                state = State.ADD;
                 break;
             case R.id.buttonSub:
+                clearNumberView();
+                state = State.SUB;
                 break;
             case R.id.buttonMul:
+                clearNumberView();
+                state = State.MUL;
                 break;
             case R.id.buttonDiv:
+                clearNumberView();
+                state = State.DIV;
                 break;
             case R.id.buttonEqual:
+                clearNumberView();
+                state = State.INIT;
                 break;
             case R.id.buttonClear:
                 clearTextView();
                 break;
             default:
                 String recentNumber = numberView.getText().toString();
-                if (recentNumber.equals("0"))
+                if(state == State.INIT)
                 {
                     recentNumber = "";
+                    state = State.NUM;
                 }
                 recentNumber += clickedButton.getText().toString();
                 numberView.setText(recentNumber);
@@ -95,5 +106,46 @@ public class Calculator extends Activity implements View.OnClickListener
     private void clearTextView()
     {
         numberView.setText("0");
+        firstNumber = 0;
+        state = State.INIT;
+    }
+
+    private void clearNumberView()
+    {
+        String tempString = numberView.getText().toString();
+        if(!tempString.equals(""))
+        {
+            firstNumber = Integer.valueOf(tempString);
+        }
+        numberView.setText("");
+    }
+
+    private void calculateResult()
+    {
+        int secondNumber = 0;
+        String tempString = numberView.getText().toString();
+        if(!tempString.equals(""))
+        {
+            secondNumber = Integer.valueOf(tempString);
+        }
+        int result;
+        switch(state)
+        {
+            case ADD:
+                result = Calculations.doAddition(firstNumber, secondNumber);
+                break;
+            case SUB:
+                result = Calculations.doSubtraction(firstNumber, secondNumber);
+                break;
+            case MUL:
+                result = Calculations.doMultiplication(firstNumber, secondNumber);
+                break;
+            case DIV:
+                result = Calculations.doDivision(firstNumber, secondNumber);
+                break;
+            default:
+                result = secondNumber;
+        }
+        numberView.setText(Integer.toString(result));
     }
 }
